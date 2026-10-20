@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Created | <%= appName %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <main class="container">
+        <section class="welcome-card">
+            <p class="eyebrow">ADMINISTRATION // ACCOUNT CREATED</p>
+            <h1>User created</h1>
+            <p>Account <strong>
+                    <%= username %>
+                </strong> was created.</p>
+            <p>
+                Copy the temporary password now and provide it to the user
+                through a secure channel. It will not be displayed again.
+            </p>
+
+            <label for="temporaryPassword">Temporary password</label>
+            <input id="temporaryPassword" type="text" value="<%= temporaryPassword %>" readonly autocomplete="off">
+
+            <button class="button-primary" type="button" id="copyPassword">
+                Copy temporary password
+            </button>
+
+            <p id="copyStatus" role="status"></p>
+
+            <p><a class="button-link" href="/users">Return to user management</a></p>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById("copyPassword").addEventListener("click", async () => {
+            const input = document.getElementById("temporaryPassword");
+            const status = document.getElementById("copyStatus");
+
+            try {
+                await navigator.clipboard.writeText(input.value);
+                status.textContent = "Copied. Store it securely and close this page when finished.";
+            } catch {
+                input.select();
+                status.textContent = "Automatic copy failed. Copy the selected password manually.";
+            }
+        });
+    </script>
+</body>
+
+</html>

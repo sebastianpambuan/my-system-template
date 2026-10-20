@@ -31,6 +31,10 @@ app.use(
 
 app.use(sessionMiddleware);
 app.use(cookieParser());
+app.use((req, res, next) => {
+    res.locals.csrfToken = generateCsrfToken(req, res);
+    next();
+});
 
 app.get("/", (req, res) => {
     res.render("index", {
@@ -39,6 +43,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/", require("./routes/authRoutes"));
+app.use("/users", require("./routes/userRoutes"));
+app.use("/roles", require("./routes/roleRoutes"));
+app.use("/activity-logs", require("./routes/activityLogRoutes"));
 
 app.get(
     "/dashboard",

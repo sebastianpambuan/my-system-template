@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role Management | <%= appName %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <main class="container">
+        <section class="welcome-card">
+            <p class="eyebrow">ACCESS CONTROL // ROLES</p>
+            <h1>Role Management</h1>
+            <p>Control which permissions are assigned to each role.</p>
+
+            <% if (success) { %>
+                <p class="status">Role permissions updated successfully.</p>
+                <% } %>
+
+                    <% for (const role of roles) { %>
+                        <section class="role-card">
+                            <h2>
+                                <%= role.name %>
+                            </h2>
+                            <p>
+                                <%= role.description || "No description provided." %>
+                            </p>
+
+                            <% if (role.name==="administrator" ) { %>
+                                <p class="status">
+                                    Administrator permissions are protected and cannot be edited here.
+                                </p>
+                                <% } else { %>
+                                    <form action="/roles/<%= role.id %>/permissions" method="POST">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+                                        <div class="permission-list">
+                                            <% for (const permission of role.permissions) { %>
+                                                <label class="permission-option">
+                                                    <input type="checkbox" name="permissionIds"
+                                                        value="<%= permission.id %>"
+                                                        <%=role.permissionIds.includes(Number(permission.id))
+                                                        ? "checked" : "" %>
+                                                    >
+                                                    <span>
+                                                        <strong>
+                                                            <%= permission.name %>
+                                                        </strong>
+                                                        <% if (permission.description) { %>
+                                                            <small>
+                                                                <%= permission.description %>
+                                                            </small>
+                                                            <% } %>
+                                                    </span>
+                                                </label>
+                                                <% } %>
+                                        </div>
+
+                                        <button class="button-primary" type="submit">
+                                            Save permissions
+                                        </button>
+                                    </form>
+                                    <% } %>
+                        </section>
+                        <% } %>
+
+                            <p><a href="/dashboard">Back to dashboard</a></p>
+        </section>
+    </main>
+</body>
+
+</html>

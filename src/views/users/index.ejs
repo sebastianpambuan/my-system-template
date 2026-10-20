@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management | <%= appName %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <main class="container">
+        <section class="welcome-card">
+            <p class="eyebrow">ADMINISTRATION // USERS</p>
+            <h1>User Management</h1>
+            <p>Manage accounts and their assigned roles.</p>
+
+            <p><a class="button-link" href="/users/new">Create user</a></p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Role(s)</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (const user of users) { %>
+                            <tr>
+                                <td>
+                                    <%= user.username %>
+                                </td>
+                                <td>
+                                    <%= user.first_name %>
+                                        <%= user.last_name %>
+                                </td>
+                                <td>
+                                    <%= user.roles || "No role" %>
+                                </td>
+                                <td>
+                                    <%= user.status %>
+                                        <% if (user.must_change_password) { %>
+                                            <small> · Password change required</small>
+                                            <% } %>
+                                </td>
+                                <td>
+                                    <a href="/users/<%= user.id %>/edit">Edit</a>
+
+                                    <% if (user.id !==currentUser.id) { %>
+                                        <form class="inline-form" action="/users/<%= user.id %>/status" method="POST">
+                                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                            <input type="hidden" name="status"
+                                                value="<%= user.status === 'active' ? 'inactive' : 'active' %>">
+                                            <button class="button-secondary" type="submit">
+                                                <%= user.status==="active" ? "Deactivate" : "Activate" %>
+                                            </button>
+                                        </form>
+                                        <% } %>
+                                </td>
+                            </tr>
+                            <% } %>
+
+                                <% if (users.length===0) { %>
+                                    <tr>
+                                        <td colspan="5">No users found.</td>
+                                    </tr>
+                                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+            <p><a href="/dashboard">Back to dashboard</a></p>
+        </section>
+    </main>
+</body>
+
+</html>

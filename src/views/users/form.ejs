@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= mode==="create" ? "Create User" : "Edit User" %> | <%= appName %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <main class="container">
+        <section class="welcome-card auth-card">
+            <p class="eyebrow">ADMINISTRATION // USERS</p>
+            <h1>
+                <%= mode==="create" ? "Create user" : "Edit user" %>
+            </h1>
+
+            <% if (error) { %>
+                <p class="alert alert-error" role="alert">
+                    <%= error %>
+                </p>
+                <% } %>
+
+                    <form action="<%= mode === 'create' ? '/users' : '/users/' + user.id + '/edit' %>" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+                        <% if (mode==="create" ) { %>
+                            <label for="username">Username</label>
+                            <input id="username" name="username" maxlength="50" pattern="[a-zA-Z0-9_.-]{3,50}"
+                                value="<%= user?.username || '' %>" required>
+                            <% } else { %>
+                                <p>Username: <strong>
+                                        <%= user.username %>
+                                    </strong></p>
+                                <% } %>
+
+                                    <label for="firstName">First name</label>
+                                    <input id="firstName" name="firstName" maxlength="100"
+                                        value="<%= user?.first_name || '' %>" required>
+
+                                    <label for="lastName">Last name</label>
+                                    <input id="lastName" name="lastName" maxlength="100"
+                                        value="<%= user?.last_name || '' %>" required>
+
+                                    <label for="roleId">Role</label>
+                                    <select id="roleId" name="roleId" required>
+                                        <option value="">Select a role</option>
+                                        <% for (const role of roles) { %>
+                                            <option value="<%= role.id %>" <%=Number(user?.roleId)===Number(role.id)
+                                                ? "selected" : "" %>
+                                                >
+                                                <%= role.name %>
+                                            </option>
+                                            <% } %>
+                                    </select>
+
+                                    <button class="button-primary" type="submit">
+                                        <%= mode==="create" ? "Create account" : "Save changes" %>
+                                    </button>
+                    </form>
+
+                    <p><a href="/users">Cancel and return to users</a></p>
+        </section>
+    </main>
+</body>
+
+</html>

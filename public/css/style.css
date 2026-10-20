@@ -141,6 +141,95 @@ button:hover,
     font-size: 0.85rem;
 }
 
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font: inherit;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 24px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+}
+
+th {
+    color: var(--primary);
+}
+
+td a {
+    color: var(--primary);
+}
+
+.inline-form {
+    display: inline-flex;
+    margin: 0 0 0 8px;
+}
+
+.inline-form button {
+    padding: 8px 10px;
+}
+
+.role-card {
+    margin-top: 24px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.role-card h2 {
+    overflow-wrap: anywhere;
+}
+
+.permission-list {
+    display: grid;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.permission-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.permission-option input {
+    width: auto;
+    margin-top: 4px;
+}
+
+.permission-option span {
+    display: grid;
+    gap: 4px;
+    overflow-wrap: anywhere;
+}
+
+.permission-option small {
+    color: var(--text-secondary);
+    font-weight: normal;
+}
+
 @media (max-width: 480px) {
     .welcome-card {
         padding: 24px;

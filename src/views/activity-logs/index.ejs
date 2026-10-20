@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Logs | <%= appName %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <main class="container">
+        <section class="welcome-card">
+            <p class="eyebrow">SYSTEM AUDIT // ACTIVITY LOGS</p>
+            <h1>Activity Logs</h1>
+            <p>Showing the latest <%= logs.length %> recorded activities.</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date and time</th>
+                            <th>Actor</th>
+                            <th>Action</th>
+                            <th>Target</th>
+                            <th>Details</th>
+                            <th>IP address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (const log of logs) { %>
+                            <tr>
+                                <td>
+                                    <%= log.created_at %>
+                                </td>
+                                <td>
+                                    <%= log.actor_username || "System / deleted account" %>
+                                </td>
+                                <td>
+                                    <%= log.action %>
+                                </td>
+                                <td>
+                                    <%= log.entity_type %>
+                                        <% if (log.entity_id !==null) { %>
+                                            #<%= log.entity_id %>
+                                                <% } %>
+                                </td>
+                                <td>
+                                    <%= log.details || "—" %>
+                                </td>
+                                <td>
+                                    <%= log.ip_address || "—" %>
+                                </td>
+                            </tr>
+                            <% } %>
+
+                                <% if (logs.length===0) { %>
+                                    <tr>
+                                        <td colspan="6">No activity has been recorded yet.</td>
+                                    </tr>
+                                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+            <p><a href="/dashboard">Back to dashboard</a></p>
+        </section>
+    </main>
+</body>
+
+</html>
