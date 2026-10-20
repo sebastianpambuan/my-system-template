@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard | <%= appName %></title>
+        <link
+            rel="stylesheet"
+            href="/css/style.css" />
+    </head>
+    <body>
+        <main class="container">
+            <section class="welcome-card">
+                <p class="eyebrow">SYSTEM // DASHBOARD</p>
+                <h1>Welcome, <%= firstName || username %></h1>
+
+                <p>You are signed in to <%= appName %>.</p>
+
+                <p class="status">Authentication successful.</p>
+
+                <form
+                    action="/logout"
+                    method="POST">
+                    <input
+                        type="hidden"
+                        name="_csrf"
+                        value="<%= csrfToken %>" />
+                    <button
+                        class="button-secondary"
+                        type="submit">
+                        Log out
+                    </button>
+                </form>
+            </section>
+        </main>
+    </body>
+</html>

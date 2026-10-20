@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | <%= appName %>
+    </title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <main class="container">
+        <section class="welcome-card auth-card">
+            <p class="eyebrow">AUTHENTICATION // LOGIN</p>
+            <h1>Sign in</h1>
+            <p>Enter your account credentials to continue.</p>
+
+            <% if (error) { %>
+                <p class="alert alert-error" role="alert">
+                    <%= error %>
+                </p>
+                <% } %>
+
+                    <form action="/login" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+                        <label for="username">Username</label>
+                        <input id="username" name="username" type="text" autocomplete="username" maxlength="100"
+                            value="<%= username %>" required>
+
+                        <label for="password">Password</label>
+                        <input id="password" name="password" type="password" autocomplete="current-password"
+                            maxlength="1024" required>
+
+                        <button class="button-primary" type="submit">Sign in</button>
+                    </form>
+
+                    <p class="helper-text">
+                        Access is restricted to authorized accounts.
+                    </p>
+        </section>
+    </main>
+</body>
+
+</html>
