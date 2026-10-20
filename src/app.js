@@ -5,7 +5,10 @@ const cookieParser = require("cookie-parser");
 
 const { sessionMiddleware } = require("./config/session");
 const { generateCsrfToken } = require("./config/csrf");
-const { requireAuth } = require("./middleware/authMiddleware");
+const {
+    requireAuth,
+    requirePermission,
+} = require("./middleware/authMiddleware");
 
 const app = express();
 const appName = () => process.env.APP_NAME || "My System Template";
@@ -30,20 +33,27 @@ app.use(sessionMiddleware);
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
-    res.render("index", { appName: appName() });
+    res.render("index", {
+        appName: appName(),
+    });
 });
 
 app.use("/", require("./routes/authRoutes"));
 
-app.get("/dashboard", requireAuth, (req, res) => {
-    res.render("dashboard", {
-        appName: appName(),
-        username: req.session.username,
-        firstName: req.session.firstName,
-        lastName: req.session.lastName,
-        csrfToken: generateCsrfToken(req, res),
-    });
-});
+app.get(
+    "/dashboard",
+    requireAuth,
+    requirePermission("dashboard.view"),
+    (req, res) => {
+        res.render("dashboard", {
+            appName: appName(),
+            username: req.currentUser.username,
+            firstName: req.currentUser.firstName,
+            lastName: req.currentUser.lastName,
+            csrfToken: generateCsrfToken(req, res),
+        });
+    },
+);
 
 app.use((req, res) => {
     res.status(404).render("error", {
@@ -75,13 +85,12 @@ app.use((error, req, res, next) => {
         });
     }
 
-    // Avoid sending internal error details to the browser.
     console.error(
         "Request failed:",
         error.code || error.name || "UnknownError",
     );
 
-    res.status(500).render("error", {
+    return res.status(500).render("error", {
         appName: appName(),
         statusCode: 500,
         message: "Something went wrong. Please try again later.",

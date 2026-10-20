@@ -3,7 +3,6 @@ const { rateLimit } = require("express-rate-limit");
 
 const authController = require("../controllers/authController");
 const { requireAuth } = require("../middleware/authMiddleware");
-
 const { doubleCsrfProtection } = require("../config/csrf");
 
 const router = express.Router();
@@ -21,6 +20,15 @@ const loginLimiter = rateLimit({
 router.get("/login", authController.showLogin);
 
 router.post("/login", loginLimiter, doubleCsrfProtection, authController.login);
+
+router.get("/change-password", requireAuth, authController.showChangePassword);
+
+router.post(
+    "/change-password",
+    requireAuth,
+    doubleCsrfProtection,
+    authController.updatePassword,
+);
 
 router.post(
     "/logout",

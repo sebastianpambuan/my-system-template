@@ -12,11 +12,11 @@ const { generateCsrfToken, doubleCsrfProtection, invalidCsrfTokenError } =
         getSecret: () => process.env.APP_CSRF_SECRET,
 
         getSessionIdentifier: (req) => {
-            if (!req.session?.id) {
+            if (!req.sessionID) {
                 throw new Error("A session is required for CSRF protection.");
             }
 
-            return req.session.id;
+            return req.sessionID;
         },
 
         cookieName: "app.csrf-token",
